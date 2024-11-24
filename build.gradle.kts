@@ -11,3 +11,9 @@ dependencies {
     implementation(rootProject.libs.kotlin.reflect)
     implementation(rootProject.projects.tsBackendCommon)
 }
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
