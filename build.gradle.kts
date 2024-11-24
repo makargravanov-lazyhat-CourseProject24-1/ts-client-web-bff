@@ -6,10 +6,10 @@ plugins {
 }
 
 dependencies {
-    implementation(rootProject.libs.spring.boot.starter)
-    implementation(rootProject.libs.spring.webMVC)
-    implementation(rootProject.libs.kotlin.reflect)
-    implementation(rootProject.projects.tsBackendCommon)
+    implementation(libs.spring.boot.starter)
+    implementation(libs.spring.boot.webMVC)
+    implementation(libs.kotlin.reflect)
+    implementation(projects.tsBackendCommon)
 }
 
 java {
