@@ -1,5 +1,1 @@
 Client Web Bff
-
-PARENT PROJECT
-
-run ONLY WITH ROOT PROJECT

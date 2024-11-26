@@ -1,0 +1,42 @@
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+spring-kotlin = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependencyManagement = { id = "io.spring.dependency-management", version.ref = "spring-dependencyManagement" }
+
+[versions]
+kotlin = "2.1.0-RC"
+kotlinx-serializationJson = "1.7.3"
+kotlinx-coroutines = "1.9.0"
+kotlinx-collectionsImmutable = "0.3.8"
+
+spring-boot = "3.4.0"
+spring-dependencyManagement = "1.1.6"
+
+exposed = "0.56.0"
+
+jjwt = "0.11.5"
+
+[libraries]
+kotlinx-coroutinesSwing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-serializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serializationJson" }
+kotlinx-collectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collectionsImmutable" }
+
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+
+spring-boot-webMVC = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-securityTest = { module = "org.springframework.security:spring-security-test" }
+
+spring-boot-exposed = { module = "org.jetbrains.exposed:exposed-spring-boot-starter", version.ref = "exposed" }
+exposed-javaTime = { module = "org.jetbrains.exposed:exposed-java-time", version.ref = "exposed" }
+exposed-JDBC = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+
+lombok = { module = "org.projectlombok:lombok" }
+
+jjwt = { module = "io.jsonwebtoken:jjwt", version.ref = "jjwt" }
+
+postgresqlDriver = { module = "org.postgresql:postgresql" }
