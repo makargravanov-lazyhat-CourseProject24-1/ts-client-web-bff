@@ -1,1 +1,1 @@
-rootProject.name = "ts-client-bff"
+rootProject.name = "ts-client-web-bff"
