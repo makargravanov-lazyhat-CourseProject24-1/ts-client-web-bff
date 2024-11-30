@@ -3,6 +3,7 @@ package ru.jetlabs.ts.clientwebbff.routes;
 import feign.FeignException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/bff/api/v1/")
+@Slf4j
 public class UserController {
     private final AuthProviderClient authProviderClient;
     private final UserServiceClient userServiceClient;
@@ -36,6 +38,7 @@ public class UserController {
         try {
             ResponseEntity<TokenResponse> response = (ResponseEntity<TokenResponse>) authProviderClient.login(loginData);
             if (response.getStatusCode().is2xxSuccessful()) {
+                log.atDebug().log("token response in /open/login : "+response);
                 return ResponseEntity.ok()
                         .header(HttpHeaders.SET_COOKIE, cookieUtility
                                 .create(Objects.requireNonNull(response.getBody()).token()))
