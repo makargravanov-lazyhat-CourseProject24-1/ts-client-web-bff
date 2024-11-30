@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .sessionManagement(s-> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .requestCache(AbstractHttpConfigurer::disable)
                 .anonymous(AbstractHttpConfigurer::disable)
-
+                .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/bff/api/v1/open/**").permitAll()
                         .requestMatchers("/bff/api/v1/secured/**").permitAll()
