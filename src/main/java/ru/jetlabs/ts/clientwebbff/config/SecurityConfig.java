@@ -8,10 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.jetlabs.ts.clientwebbff.entities.ValidationResult;
 import ru.jetlabs.ts.clientwebbff.service.AuthService;
@@ -33,14 +37,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .sessionManagement(s-> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .requestCache(AbstractHttpConfigurer::disable)
+                .anonymous(AbstractHttpConfigurer::disable)
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/bff/api/v1/open/**").permitAll()
-                        .requestMatchers("/bff/api/v1/secured/**").authenticated()
-                        .requestMatchers("/bff/api/v1/confirmed/**").authenticated()
-                        .anyRequest().denyAll()
+                        .requestMatchers("/bff/api/v1/secured/**").permitAll()
+                        .requestMatchers("/bff/api/v1/confirmed/**").permitAll()
+                        .anyRequest().permitAll()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(authService), OncePerRequestFilter.class)
-                .addFilterBefore(new ConfirmedEmailFilter(authService), OncePerRequestFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(authService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ConfirmedEmailFilter(authService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -71,7 +71,7 @@ public class UserController {
             return ResponseEntity.status(e.status()).build();
         }
     }
-    @PostMapping("/secured/profile/my")
+    @GetMapping("/secured/profile/my")
     ResponseEntity<UserResponseForm> myProfile(HttpServletRequest request){
         try {
             return userServiceClient.getById(Long.parseLong(
