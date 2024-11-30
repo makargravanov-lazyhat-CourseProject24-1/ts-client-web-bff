@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.spring.boot.securityTest)
     implementation(libs.kotlin.reflect)
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+    testImplementation("org.slf4j:slf4j-simple:1.6.1")
 }
 
 java {
