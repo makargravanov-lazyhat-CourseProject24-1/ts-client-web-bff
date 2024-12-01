@@ -6,16 +6,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.AuthorizationFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.jetlabs.ts.clientwebbff.entities.ValidationResult;
 import ru.jetlabs.ts.clientwebbff.service.AuthService;
@@ -25,7 +18,6 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
     private final AuthService authService;
@@ -35,27 +27,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .logout(AbstractHttpConfigurer::disable)
-                .sessionManagement(AbstractHttpConfigurer::disable)
-                .requestCache(AbstractHttpConfigurer::disable)
-                .anonymous(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/bff/api/v1/open/**").permitAll()
-                        .requestMatchers("/bff/api/v1/secured/**").permitAll()
-                        .requestMatchers("/bff/api/v1/confirmed/**").permitAll()
-                        .anyRequest().permitAll()
-                )
-                .addFilterBefore(new JwtAuthenticationFilter(authService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new ConfirmedEmailFilter(authService), UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+    public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilter() {
+        FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new JwtAuthenticationFilter(authService));
+        registrationBean.addUrlPatterns("/bff/api/v1/secured/*");
+        registrationBean.setOrder(1);
+        return registrationBean;
+    }
+    @Bean
+    public FilterRegistrationBean<ConfirmedEmailFilter> confirmedEmailFilter() {
+        FilterRegistrationBean<ConfirmedEmailFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new ConfirmedEmailFilter(authService));
+        registrationBean.addUrlPatterns("/bff/api/v1/confirmed/*");
+        registrationBean.setOrder(2);
+        return registrationBean;
     }
 
-    private static class JwtAuthenticationFilter extends OncePerRequestFilter {
+    public static class JwtAuthenticationFilter extends OncePerRequestFilter {
         private final AuthService authService;
 
         private JwtAuthenticationFilter(AuthService authService) {
@@ -97,7 +85,7 @@ public class SecurityConfig {
         }
     }
 
-    private static class ConfirmedEmailFilter extends OncePerRequestFilter {
+    public static class ConfirmedEmailFilter extends OncePerRequestFilter {
         private final AuthService authService;
 
         private ConfirmedEmailFilter(AuthService authService) {

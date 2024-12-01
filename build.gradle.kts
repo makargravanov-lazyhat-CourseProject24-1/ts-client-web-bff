@@ -17,8 +17,6 @@ dependencies {
     implementation(libs.spring.boot.starter)
     implementation(libs.spring.boot.webMVC)
     implementation(libs.lombok)
-    implementation(libs.spring.boot.security)
-    implementation(libs.spring.boot.securityTest)
     implementation(libs.kotlin.reflect)
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 }
