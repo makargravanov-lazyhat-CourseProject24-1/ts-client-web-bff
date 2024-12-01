@@ -41,7 +41,7 @@ public class UserController {
                 System.out.println(("token "+ response));
                 return ResponseEntity.ok()
                         .header(HttpHeaders.SET_COOKIE, cookieUtility
-                                .create(Objects.requireNonNull(response.getBody()).token()))
+                                .create(Objects.requireNonNull(response.getBody()).token()).toString())
                         .body(new UserIdResponse(
                         Objects.requireNonNull(response.getBody()).userId()));
             } else {

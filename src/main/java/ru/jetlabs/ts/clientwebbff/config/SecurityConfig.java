@@ -9,9 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.jetlabs.ts.clientwebbff.entities.ValidationResult;
 import ru.jetlabs.ts.clientwebbff.service.AuthService;
+import ru.jetlabs.ts.clientwebbff.service.CookieUtility;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -21,15 +23,17 @@ import java.util.Optional;
 public class SecurityConfig {
 
     private final AuthService authService;
+    private final CookieUtility cookieUtility;
 
-    public SecurityConfig(AuthService authService) {
+    public SecurityConfig(AuthService authService, CookieUtility cookieUtility) {
         this.authService = authService;
+        this.cookieUtility = cookieUtility;
     }
 
     @Bean
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilter() {
         FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new JwtAuthenticationFilter(authService));
+        registrationBean.setFilter(new JwtAuthenticationFilter(authService, cookieUtility));
         registrationBean.addUrlPatterns("/bff/api/v1/secured/*");
         registrationBean.setOrder(1);
         return registrationBean;
@@ -37,7 +41,7 @@ public class SecurityConfig {
     @Bean
     public FilterRegistrationBean<ConfirmedEmailFilter> confirmedEmailFilter() {
         FilterRegistrationBean<ConfirmedEmailFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new ConfirmedEmailFilter(authService));
+        registrationBean.setFilter(new ConfirmedEmailFilter(authService, cookieUtility));
         registrationBean.addUrlPatterns("/bff/api/v1/confirmed/*");
         registrationBean.setOrder(2);
         return registrationBean;
@@ -45,9 +49,11 @@ public class SecurityConfig {
 
     public static class JwtAuthenticationFilter extends OncePerRequestFilter {
         private final AuthService authService;
+        private final CookieUtility cookieUtility;
 
-        private JwtAuthenticationFilter(AuthService authService) {
+        private JwtAuthenticationFilter(AuthService authService, CookieUtility cookieUtility) {
             this.authService = authService;
+            this.cookieUtility = cookieUtility;
         }
 
         @Override
@@ -68,9 +74,8 @@ public class SecurityConfig {
                         return;
                     }
                     if (result.isValid()) {
-                        Cookie newJwtCookie = new Cookie("jwt", result.newToken());
-                        newJwtCookie.setHttpOnly(true);
-                        response.addCookie(newJwtCookie);
+                        response.setHeader(HttpHeaders.SET_COOKIE,
+                                cookieUtility.create(result.newToken()).toString());
                         request.setAttribute("extractedId", result.userId());
                     } else {
                         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Unauthorized");
@@ -87,9 +92,11 @@ public class SecurityConfig {
 
     public static class ConfirmedEmailFilter extends OncePerRequestFilter {
         private final AuthService authService;
+        private final CookieUtility cookieUtility;
 
-        private ConfirmedEmailFilter(AuthService authService) {
+        private ConfirmedEmailFilter(AuthService authService, CookieUtility cookieUtility) {
             this.authService = authService;
+            this.cookieUtility = cookieUtility;
         }
 
         @Override
@@ -110,9 +117,8 @@ public class SecurityConfig {
                         return;
                     }
                     if (result.isValid()) {
-                        Cookie newJwtCookie = new Cookie("jwt", result.newToken());
-                        newJwtCookie.setHttpOnly(true);
-                        response.addCookie(newJwtCookie);
+                        response.setHeader(HttpHeaders.SET_COOKIE,
+                                cookieUtility.create(result.newToken()).toString());
                         request.setAttribute("extractedId", result.userId());
                     } else {
                         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Need email confirm");
