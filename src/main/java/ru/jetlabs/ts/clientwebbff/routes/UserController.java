@@ -77,6 +77,7 @@ public class UserController {
     @GetMapping("/secured/profile/my")
     ResponseEntity<UserResponseForm> myProfile(HttpServletRequest request){
         try {
+            System.out.println("extracted id = "+request.getAttribute("extractedId"));
             return userServiceClient.getById(Long.parseLong(
                     String.valueOf(request.getAttribute("extractedId"))));
         } catch (FeignException e) {
