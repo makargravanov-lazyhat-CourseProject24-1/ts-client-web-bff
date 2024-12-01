@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "ts-auth-provider", url = "http://ts-auth-provider:8080/ts-auth-provider/api/v1")
 public interface AuthProviderClient {
     @PostMapping("/login")
-    ResponseEntity<?> login(@RequestBody LoginRequest loginRequest);
+    ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest);
     @PostMapping("/validate")
-    ResponseEntity<?> validateToken(@RequestBody TokenRequest tokenRequest);
+    ResponseEntity<TokenResponse> validateToken(@RequestBody TokenRequest tokenRequest);
 }

@@ -36,7 +36,7 @@ public class UserController {
     @PostMapping("/open/login")
     ResponseEntity<?> login(@RequestBody LoginRequest loginData){
         try {
-            ResponseEntity<TokenResponse> response = (ResponseEntity<TokenResponse>) authProviderClient.login(loginData);
+            ResponseEntity<TokenResponse> response = authProviderClient.login(loginData);
             if (response.getStatusCode().is2xxSuccessful()) {
                 System.out.println(("token "+ response));
                 return ResponseEntity.ok()
