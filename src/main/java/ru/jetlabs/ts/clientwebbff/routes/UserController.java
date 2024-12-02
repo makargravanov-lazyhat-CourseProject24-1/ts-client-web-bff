@@ -81,6 +81,7 @@ public class UserController {
             return userServiceClient.getById(Long.parseLong(
                     String.valueOf(request.getAttribute("extractedId"))));
         } catch (FeignException e) {
+            System.out.println(e);
             return ResponseEntity.status(e.status()).build();
         }
     }
