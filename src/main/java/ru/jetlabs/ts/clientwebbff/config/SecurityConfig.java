@@ -70,6 +70,7 @@ public class SecurityConfig {
                     try {
                         result = authService.validate(token);
                     }catch (FeignException e){
+                        System.out.println("error in filter: "+ e);
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal error in system");
                         return;
                     }
