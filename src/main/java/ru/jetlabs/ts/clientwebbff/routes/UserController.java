@@ -78,8 +78,10 @@ public class UserController {
     ResponseEntity<UserResponseForm> myProfile(HttpServletRequest request){
         try {
             System.out.println("extracted id = "+request.getAttribute("extractedId"));
-            return userServiceClient.getById(Long.parseLong(
+            ResponseEntity<UserResponseForm> result = userServiceClient.getById(Long.parseLong(
                     String.valueOf(request.getAttribute("extractedId"))));
+            System.out.println(result);
+            return result;
         } catch (FeignException e) {
             System.out.println(e);
             return ResponseEntity.status(e.status()).build();
