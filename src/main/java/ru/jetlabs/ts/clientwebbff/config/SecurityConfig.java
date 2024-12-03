@@ -10,6 +10,10 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.jetlabs.ts.clientwebbff.entities.ValidationResult;
 import ru.jetlabs.ts.clientwebbff.service.AuthService;
@@ -17,6 +21,7 @@ import ru.jetlabs.ts.clientwebbff.service.CookieUtility;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Configuration
@@ -31,19 +36,37 @@ public class SecurityConfig {
     }
 
     @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedHeaders(List.of(CorsConfiguration.ALL));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of(CorsConfiguration.ALL));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
+        bean.setOrder(1);
+
+        return bean;
+    }
+
+    @Bean
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilter() {
         FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtAuthenticationFilter(authService, cookieUtility));
         registrationBean.addUrlPatterns("/bff/api/v1/secured/*");
-        registrationBean.setOrder(1);
+        registrationBean.setOrder(2);
         return registrationBean;
     }
+
     @Bean
     public FilterRegistrationBean<ConfirmedEmailFilter> confirmedEmailFilter() {
         FilterRegistrationBean<ConfirmedEmailFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new ConfirmedEmailFilter(authService, cookieUtility));
         registrationBean.addUrlPatterns("/bff/api/v1/confirmed/*");
-        registrationBean.setOrder(2);
+        registrationBean.setOrder(3);
         return registrationBean;
     }
 
@@ -69,8 +92,8 @@ public class SecurityConfig {
                     ValidationResult result;
                     try {
                         result = authService.validate(token);
-                    }catch (FeignException e){
-                        System.out.println("error in filter: "+ e);
+                    } catch (FeignException e) {
+                        System.out.println("error in filter: " + e);
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal error in system");
                         return;
                     }
@@ -113,7 +136,7 @@ public class SecurityConfig {
                     ValidationResult result;
                     try {
                         result = authService.validateConfirmed(token);
-                    }catch (FeignException e){
+                    } catch (FeignException e) {
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal error in system");
                         return;
                     }
