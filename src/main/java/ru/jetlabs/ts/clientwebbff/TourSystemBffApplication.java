@@ -14,18 +14,5 @@ public class TourSystemBffApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TourSystemBffApplication.class, args);
 	}
-
-	@Bean
-	public static WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings( CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowedOrigins("http://localhost:5173", "https://tour.lazyhat.ru")
-						.allowedMethods("*")
-						.allowCredentials(true);
-			}
-		};
-	}
 }
 
