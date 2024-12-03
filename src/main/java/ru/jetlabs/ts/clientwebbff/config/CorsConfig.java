@@ -12,6 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173", "https://tour.lazyhat.ru")
                 .allowedMethods("*")
+                .allowedHeaders("Cookie", "Set-Cookie")
                 .allowCredentials(true);
     }
 }
