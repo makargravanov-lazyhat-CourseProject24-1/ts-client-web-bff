@@ -82,9 +82,9 @@ public class SecurityConfig {
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
-            System.out.println(request);
-            System.out.println(response);
-            System.out.println(filterChain);
+            System.out.println(request.toString());
+            System.out.println(response.toString());
+            System.out.println(filterChain.toString());
             System.out.println("-----------------------------");
 
             if (request.getRequestURI().startsWith("/bff/api/v1/secured/")) {
@@ -131,11 +131,6 @@ public class SecurityConfig {
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
-            System.out.println(request);
-            System.out.println(response);
-            System.out.println(filterChain);
-            System.out.println("-----------------------------");
-
             if (request.getRequestURI().startsWith("/bff/api/v1/confirmed/")) {
                 Optional<Cookie> jwtCookie = Arrays.stream(request.getCookies())
                         .filter(cookie -> "jwt".equals(cookie.getName()))
