@@ -38,7 +38,7 @@ public class SecurityConfig {
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedHeaders(List.of(CorsConfiguration.ALL));
+        config.setAllowedHeaders(List.of("Set-Cookie", "Cookie"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of(CorsConfiguration.ALL));
