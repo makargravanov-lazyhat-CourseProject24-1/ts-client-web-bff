@@ -82,9 +82,9 @@ public class UserController {
                     String.valueOf(request.getAttribute("extractedId"))));
             System.out.println(result);
             return result;
-        } catch (FeignException e) {
-            System.out.println(e);
-            return ResponseEntity.status(e.status()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
