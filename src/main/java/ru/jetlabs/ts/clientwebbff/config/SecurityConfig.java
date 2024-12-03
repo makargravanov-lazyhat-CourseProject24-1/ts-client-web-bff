@@ -41,7 +41,7 @@ public class SecurityConfig {
         config.setAllowedHeaders(List.of("Set-Cookie", "Cookie"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of(CorsConfiguration.ALL));
+        config.setAllowedOrigins(List.of("https://tour.lazyhat.ru"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
