@@ -38,7 +38,7 @@ public class UserController {
         try {
             ResponseEntity<TokenResponse> response = authProviderClient.login(loginData);
             if (response.getStatusCode().is2xxSuccessful()) {
-                System.out.println(("token "+ response));
+                System.out.println(("token " + response));
                 return ResponseEntity.ok()
                         .header(HttpHeaders.SET_COOKIE, cookieUtility
                                 .create(Objects.requireNonNull(response.getBody()).token()).toString())
