@@ -81,6 +81,7 @@ public class UserController {
             ResponseEntity<UserResponseForm> result = userServiceClient.getById(Long.parseLong(
                     String.valueOf(request.getAttribute("extractedId"))));
             System.out.println(result);
+            System.out.println("\n------------------------");
             return result;
         } catch (Exception e) {
             e.printStackTrace();
