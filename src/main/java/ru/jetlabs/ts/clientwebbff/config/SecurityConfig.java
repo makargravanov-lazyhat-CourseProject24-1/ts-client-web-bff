@@ -57,7 +57,7 @@ public class SecurityConfig {
         FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtAuthenticationFilter(authService, cookieUtility));
         registrationBean.addUrlPatterns("/bff/api/v1/secured/*");
-        registrationBean.setOrder(1);
+        registrationBean.setOrder(2);
         return registrationBean;
     }*/
 
