@@ -52,14 +52,14 @@ public class SecurityConfig {
 //        return bean;
 //    }
 
-    @Bean
+    /*@Bean
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilter() {
         FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtAuthenticationFilter(authService, cookieUtility));
         registrationBean.addUrlPatterns("/bff/api/v1/secured/*");
-        registrationBean.setOrder(2);
+        registrationBean.setOrder(1);
         return registrationBean;
-    }
+    }*/
 
     @Bean
     public FilterRegistrationBean<ConfirmedEmailFilter> confirmedEmailFilter() {
