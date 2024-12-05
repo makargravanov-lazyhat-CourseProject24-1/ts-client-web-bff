@@ -91,7 +91,7 @@ public class SecurityConfig {
                     String token = jwtCookie.get().getValue();
                     ValidationResult result;
                     try {
-                        result = new ValidationResult(true,2L,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiZXhwIjoxNzMzMzYwNjcxfQ.2ysRknUBYlkze-pScT9p35ue522TqoMOq6bOzlAKmPk");
+                        result = authService.validate(token);
                     } catch (FeignException e) {
                         System.out.println("error in filter: " + e);
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal error in system");
