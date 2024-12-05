@@ -88,7 +88,7 @@ public class UserController {
                     String.valueOf(request.getAttribute("extractedId"))));
             System.out.println(result);
             System.out.println("\n------------------------");
-            return ResponseEntity.status(200).header("Content-Type", "application/json").body(result.getBody());
+            return ResponseEntity.status(200).body(result.getBody());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
