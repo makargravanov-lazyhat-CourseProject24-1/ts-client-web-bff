@@ -17,6 +17,7 @@ import ru.jetlabs.ts.clientwebbff.client.userservice.UserUpdatePasswordForm;
 import ru.jetlabs.ts.clientwebbff.dto.UserIdResponse;
 import ru.jetlabs.ts.clientwebbff.service.CookieUtility;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RestController
@@ -36,17 +37,16 @@ public class UserController {
     @PostMapping("/open/login")
     ResponseEntity<?> login(@RequestBody LoginRequest loginData){
         try {
-            ResponseEntity<TokenResponse> response = authProviderClient.login(loginData);
-            if (response.getStatusCode().is2xxSuccessful()) {
-                System.out.println(("token " + response));
+            //ResponseEntity<TokenResponse> response = authProviderClient.login(loginData);
+            //if (response.getStatusCode().is2xxSuccessful()) {
+                //System.out.println(("token " + response));
                 return ResponseEntity.ok()
                         .header(HttpHeaders.SET_COOKIE, cookieUtility
-                                .create(Objects.requireNonNull(response.getBody()).token()).toString())
-                        .body(new UserIdResponse(
-                        Objects.requireNonNull(response.getBody()).userId()));
-            } else {
-                return ResponseEntity.status(404).body("Incorrect email or password");
-            }
+                                .create("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiZXhwIjoxNzMzMzYwNjcxfQ.2ysRknUBYlkze-pScT9p35ue522TqoMOq6bOzlAKmPk").toString())
+                        .body(new UserIdResponse(2L));
+            //} else {
+              //  return ResponseEntity.status(404).body("Incorrect email or password");
+           // }
         }catch (FeignException e){
             if(e.status()==404){
                 return ResponseEntity.status(404).body("Incorrect email or password");
@@ -77,9 +77,22 @@ public class UserController {
     @GetMapping("/secured/profile/my")
     ResponseEntity<UserResponseForm> myProfile(HttpServletRequest request){
         try {
-            System.out.println("extracted id = "+request.getAttribute("extractedId"));
-            ResponseEntity<UserResponseForm> result = userServiceClient.getById(Long.parseLong(
-                    String.valueOf(request.getAttribute("extractedId"))));
+            //System.out.println("extracted id = "+request.getAttribute("extractedId"));
+            ResponseEntity<UserResponseForm> result = ResponseEntity
+                    .ok()
+                    .body(new UserResponseForm(
+                            2L, // id
+                            "Иван", // firstName
+                            "Иванов", // lastName
+                            null, // middleName
+                            "ivan.ivanov@example.com", // email
+                            false, // emailVerified
+                            "1234", // passportSeries
+                            "567890", // passportNumber
+                            null, // phone
+                            false, // phoneVerified
+                            LocalDateTime.now() // createdAt
+                    ));
             System.out.println(result);
             System.out.println("\n------------------------");
             return result;
