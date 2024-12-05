@@ -69,8 +69,12 @@ public class UserController {
     ResponseEntity<Boolean> changePassword(HttpServletRequest request,
                                            @RequestBody UserUpdatePasswordForm form) {
         try {
-            return userServiceClient.changePassword(
+            System.out.println("extracted id = "+request.getAttribute("extractedId"));
+            ResponseEntity<Boolean> response = userServiceClient.changePassword(
                     Long.parseLong(String.valueOf(request.getAttribute("extractedId"))), form);
+            System.out.println("changePassword() : "+response);
+            System.out.println("\n------------------------");
+            return response;
         } catch (FeignException e) {
             return ResponseEntity.status(e.status()).build();
         }
