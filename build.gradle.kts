@@ -19,6 +19,8 @@ dependencies {
     implementation(libs.lombok)
     implementation(libs.kotlin.reflect)
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+    implementation("io.projectreactor:reactor-core:3.7.0")
+
 }
 
 java {
