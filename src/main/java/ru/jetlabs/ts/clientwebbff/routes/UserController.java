@@ -54,6 +54,7 @@ public class UserController {
             return ResponseEntity.status(e.status()).build();
         }
     }
+
     @PostMapping("/open/register")
     ResponseEntity<?> register(@RequestBody UserCreateForm registerForm){
         try{
@@ -74,6 +75,7 @@ public class UserController {
             return ResponseEntity.status(e.status()).build();
         }
     }
+
     @GetMapping("/secured/profile/my")
     ResponseEntity<UserResponseForm> myProfile(HttpServletRequest request){
         try {
@@ -82,8 +84,7 @@ public class UserController {
                     String.valueOf(request.getAttribute("extractedId"))));
             System.out.println(result);
             System.out.println("\n------------------------");
-
-            return ResponseEntity.ok(result.getBody());
+            return ResponseEntity.status(200).headers(result.getHeaders()).body(result.getBody());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
