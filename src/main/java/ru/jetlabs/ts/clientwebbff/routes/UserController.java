@@ -37,16 +37,17 @@ public class UserController {
     @PostMapping("/open/login")
     ResponseEntity<?> login(@RequestBody LoginRequest loginData){
         try {
-            //ResponseEntity<TokenResponse> response = authProviderClient.login(loginData);
-            //if (response.getStatusCode().is2xxSuccessful()) {
-                //System.out.println(("token " + response));
+            ResponseEntity<TokenResponse> response = authProviderClient.login(loginData);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                System.out.println(("token " + response));
                 return ResponseEntity.ok()
                         .header(HttpHeaders.SET_COOKIE, cookieUtility
-                                .create("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiZXhwIjoxNzMzMzYwNjcxfQ.2ysRknUBYlkze-pScT9p35ue522TqoMOq6bOzlAKmPk").toString())
-                        .body(new UserIdResponse(2L));
-            //} else {
-              //  return ResponseEntity.status(404).body("Incorrect email or password");
-           // }
+                                .create(Objects.requireNonNull(response.getBody()).token()).toString())
+                        .body(new UserIdResponse(
+                                Objects.requireNonNull(response.getBody()).userId()));
+            } else {
+                return ResponseEntity.status(404).body("Incorrect email or password");
+            }
         }catch (FeignException e){
             if(e.status()==404){
                 return ResponseEntity.status(404).body("Incorrect email or password");
