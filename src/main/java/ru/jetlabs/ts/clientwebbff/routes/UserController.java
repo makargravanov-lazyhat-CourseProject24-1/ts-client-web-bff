@@ -88,9 +88,7 @@ public class UserController {
                     String.valueOf(request.getAttribute("extractedId"))));
             System.out.println(result);
             System.out.println("\n------------------------");
-            HttpHeaders headers = result.getHeaders();
-            headers.remove("transfer-encoding");
-            return ResponseEntity.status(200).headers(headers).body(result.getBody());
+            return ResponseEntity.status(200).body(result.getBody());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
