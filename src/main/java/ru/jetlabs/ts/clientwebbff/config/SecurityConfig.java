@@ -21,7 +21,6 @@ import ru.jetlabs.ts.clientwebbff.service.CookieUtility;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Configuration
@@ -34,23 +33,6 @@ public class SecurityConfig {
         this.authService = authService;
         this.cookieUtility = cookieUtility;
     }
-
-//    @Bean
-//    public FilterRegistrationBean<CorsFilter> corsFilter() {
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowedHeaders(List.of("Set-Cookie", "Cookie"));
-//        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//        config.setAllowCredentials(true);
-//        config.setAllowedOrigins(List.of("https://tour.lazyhat.ru"));
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", config);
-//
-//        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
-//        bean.setOrder(1);
-//
-//        return bean;
-//    }
 
     @Bean
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilter() {
