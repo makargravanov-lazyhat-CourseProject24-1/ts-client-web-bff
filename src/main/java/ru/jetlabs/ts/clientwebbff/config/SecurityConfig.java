@@ -39,9 +39,9 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:5173");
-        config.addAllowedOrigin("https://pay.lazyhat.ru");
+        config.addAllowedOrigin("https://tour.lazyhat.ru");
         config.addAllowedOrigin("http://localhost:5173/");
-        config.addAllowedOrigin("https://pay.lazyhat.ru/");
+        config.addAllowedOrigin("https://tour.lazyhat.ru/");
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "PUT"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
