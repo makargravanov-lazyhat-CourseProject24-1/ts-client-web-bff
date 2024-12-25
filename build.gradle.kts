@@ -1,26 +1,29 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.spring.kotlin)
-    alias(libs.plugins.spring.boot)
-    alias(libs.plugins.spring.dependencyManagement)
+    val kotlin = "2.1.0"
+    val springBoot = "3.4.0"
+    val springDependencyManagement = "1.1.6"
+
+    kotlin("jvm") version kotlin
+    kotlin("plugin.spring") version kotlin
+    id("org.springframework.boot") version springBoot
+    id("io.spring.dependency-management") version springDependencyManagement
 }
-val springCloudVersion by extra("2024.0.0-RC1")
 
 repositories {
     mavenCentral()
-    maven("https://repo.spring.io/milestone/")
 }
 
 group = "ru.jetlabs"
 
 dependencies {
-    implementation(libs.spring.boot.starter)
-    implementation(libs.spring.boot.webMVC)
-    implementation(libs.lombok)
-    implementation(libs.kotlin.reflect)
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-    implementation("io.projectreactor:reactor-core:3.7.0")
+    val reactor = "3.7.0"
 
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.projectlombok:lombok")
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+    implementation("io.projectreactor:reactor-core:$reactor")
 }
 
 java {
@@ -30,7 +33,10 @@ java {
 }
 
 dependencyManagement {
+    val springCloud = "2024.0.0"
+
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloud")
     }
 }
+
