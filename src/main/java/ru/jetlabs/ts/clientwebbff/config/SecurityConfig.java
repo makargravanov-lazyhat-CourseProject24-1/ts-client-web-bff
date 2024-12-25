@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,6 +20,7 @@ import ru.jetlabs.ts.clientwebbff.service.CookieUtility;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Configuration
@@ -32,6 +32,23 @@ public class SecurityConfig {
     public SecurityConfig(AuthService authService, CookieUtility cookieUtility) {
         this.authService = authService;
         this.cookieUtility = cookieUtility;
+    }
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
+        FilterRegistrationBean<CorsFilter> corsBean = new FilterRegistrationBean<>();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("https://pay.lazyhat.ru");
+        config.addAllowedOrigin("http://localhost:5173/");
+        config.addAllowedOrigin("https://pay.lazyhat.ru/");
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "PUT"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        corsBean.setFilter(new CorsFilter(source));
+        corsBean.setOrder(1);
+        return corsBean;
     }
 
     @Bean
