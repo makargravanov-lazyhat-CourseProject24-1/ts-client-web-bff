@@ -20,6 +20,6 @@ public interface AgencyClient {
     ResponseEntity<?> getMyAgencies(@PathVariable Long id);
 
     @PostMapping("/update-bank")
-    ResponseEntity<?> updateBankAccount(@RequestBody AgencyUpdateBankAccountForm updateBankAccountForm);
+    ResponseEntity<String> updateBankAccount(@RequestBody AgencyUpdateBankAccountForm updateBankAccountForm);
 
 }
