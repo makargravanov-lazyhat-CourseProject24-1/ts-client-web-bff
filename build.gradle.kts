@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     val kotlin = "2.1.0"
     val springBoot = "3.4.0"
@@ -30,6 +32,13 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_21)
+        freeCompilerArgs.addAll("-Xjsr305=strict")
+    }
+    jvmToolchain(21)
 }
 
 dependencyManagement {
