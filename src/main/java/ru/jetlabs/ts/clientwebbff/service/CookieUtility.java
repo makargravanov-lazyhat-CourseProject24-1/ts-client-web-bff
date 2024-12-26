@@ -10,6 +10,7 @@ public class CookieUtility {
                 .value(token)
                 .path("/")
                 .httpOnly(true)
+                .sameSite("None")
                 .secure(true)
                 .build();
     }
