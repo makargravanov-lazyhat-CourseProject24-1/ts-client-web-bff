@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(url = "http://ts-tickets-service:8080/ts-tickets-service/api/v1/tickets")
+@FeignClient(name="ts-tickets-service", url = "http://ts-tickets-service:8080/ts-tickets-service/api/v1/tickets")
 public interface TicketClient {
     @PostMapping
     ResponseEntity<Ticket> registerTicket(@RequestBody RegisterTicketForm form);
