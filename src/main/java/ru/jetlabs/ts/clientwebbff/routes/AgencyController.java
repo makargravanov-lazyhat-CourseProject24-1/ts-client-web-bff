@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.jetlabs.ts.clientwebbff.client.agency.*;
 import ru.jetlabs.ts.clientwebbff.client.tours.RegisterTicketForm;
 import ru.jetlabs.ts.clientwebbff.client.tours.TicketClient;
+import ru.jetlabs.ts.clientwebbff.client.tours.Tour;
 import ru.jetlabs.ts.clientwebbff.client.tours.TourClient;
 
 @RestController
@@ -31,8 +32,8 @@ public class AgencyController {
         return ResponseEntity.ok(tourClient.getAll().getBody());
     }
     @PostMapping("/secured/regtour")
-    ResponseEntity<?> register(@RequestBody RegisterTicketForm form){
-        return ResponseEntity.ok(ticketClient.registerTicket(form).getBody());
+    ResponseEntity<?> register(HttpServletRequest request, @RequestBody Tour form){
+        return ResponseEntity.ok(ticketClient.registerTicket(new RegisterTicketForm(form, (Long) request.getAttribute("extractedId"))).getBody());
     }
     @GetMapping("/secured/my")
     ResponseEntity<?> getAllMyTickets(HttpServletRequest request){
@@ -42,8 +43,6 @@ public class AgencyController {
     ResponseEntity<?> pay(@PathVariable Long id){
         return ResponseEntity.ok(ticketClient.pay(id));
     }
-
-
     @GetMapping("/agency/{id}")
     ResponseEntity<?> getAgencyById(@PathVariable Long id) {
         return ResponseEntity.ok(agencyClient.getAgencyById(id).getBody());
